@@ -11,7 +11,7 @@ services:
     runtime: docker
     plan: free
     region: oregon
-    branch: master
+    branch: main
     rootDir: backend
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
@@ -44,7 +44,7 @@ services:
     name: leadscraper-frontend
     runtime: static
     plan: free
-    branch: master
+    branch: main
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
