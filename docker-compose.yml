@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: leadscraper
+      POSTGRES_PASSWORD: leadscraper
+      POSTGRES_DB: leadscraper
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leadscraper"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg2://leadscraper:leadscraper@postgres:5432/leadscraper
+      SECRET_KEY: cambia-esto-en-produccion
+      CORS_ORIGINS: http://localhost,http://localhost:5173,http://localhost:8080
+      SCRAPER_HEADLESS: "true"
+      CHROME_BINARY_PATH: /usr/bin/chromium
+      CHROMEDRIVER_PATH: /usr/bin/chromedriver
+    ports:
+      - "8000:8000"
+    shm_size: 2gb
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres_data:

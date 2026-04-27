@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.pytest_cache/
+.coverage
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+.npm/
+.cache/
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+*.log
+
+# Logs
+logs/
+*.tmp
+
+# Build outputs
+build/
+
+# Misc
+*.swp
+*.bak
